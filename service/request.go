@@ -5,7 +5,7 @@ import (
 	"landlord/common"
 )
 
-//处理websocket请求
+// 处理websocket请求
 func wsRequest(data []interface{}, client *Client) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -195,7 +195,7 @@ func wsRequest(data []interface{}, client *Client) {
 			}
 		}
 
-		//case common.ReqGameOver:
+		// case common.ReqGameOver:
 	case common.ReqChat:
 		if len(data) > 1 {
 			switch data[1].(type) {

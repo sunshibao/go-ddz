@@ -34,7 +34,7 @@ func initLogger() (err error) {
 	}
 	err = logs.SetLogger(logs.AdapterFile, string(configStr))
 	if err != nil {
-		logs.Error("init logger :%v",err)
+		logs.Error("init logger :%v", err)
 	}
 	return
 }

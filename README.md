@@ -22,10 +22,6 @@
 3.启动:
     浏览器访问 http://localhost
 
-4.效果展示:
-http://blzz.shop:8080
-
-
 ---
 
 License
@@ -36,6 +32,6 @@ information or see https://opensource.org/licenses/MIT.
    
 ---
 
-![](https://raw.githubusercontent.com/dwg255/landlord/master/static/1.png)
-![](https://raw.githubusercontent.com/dwg255/landlord/master/static/2.png)
-![](https://raw.githubusercontent.com/dwg255/landlord/master/static/3.png)
+![](./static/1.png)
+![](./static/2.png)
+![](./static/3.png)

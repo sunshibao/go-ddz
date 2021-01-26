@@ -1,10 +1,10 @@
 package common
 
 import (
-	"os"
-	"github.com/astaxie/beego/logs"
-	"strconv"
 	"encoding/json"
+	"github.com/astaxie/beego/logs"
+	"os"
+	"strconv"
 )
 
 func write() {
@@ -20,7 +20,7 @@ func write() {
 	}
 }
 
-//生成连续num个的单牌的顺子
+// 生成连续num个的单牌的顺子
 func generateSeq(num int, seq []string) (res []string) {
 	for i, _ := range seq {
 		if i+num > 12 {
@@ -35,29 +35,29 @@ func generateSeq(num int, seq []string) (res []string) {
 	return
 }
 
-//生成num个不同单的组合
+// 生成num个不同单的组合
 func combination(seq []string, num int) (comb []string) {
 	if num == 0 {
 		panic("generate err , combination count can not be 0")
 	}
 	if len(seq) < num {
-		logs.Error("seq: %v,num:%d",seq,num)
+		logs.Error("seq: %v,num:%d", seq, num)
 		return
-		//panic("generate err , seq length less than num")
+		// panic("generate err , seq length less than num")
 	}
 	if num == 1 {
 		return seq
 	}
 	if len(seq) == num {
 		allSingle := ""
-		for _,single := range seq{
+		for _, single := range seq {
 			allSingle += single
 		}
 		return []string{allSingle}
 	}
-	noFirst := combination(seq[1:],num)
+	noFirst := combination(seq[1:], num)
 	hasFirst := []string(nil)
-	for _,comb := range combination(seq[1:],num-1) {
+	for _, comb := range combination(seq[1:], num-1) {
 		hasFirst = append(hasFirst, string(seq[0])+comb)
 	}
 	comb = append(comb, noFirst...)
@@ -117,7 +117,7 @@ func generate() {
 				for k, v := range seq {
 					if v[0] == seqTrio[i] {
 						copy(seq[k:], seq[k+1:])
-						seq = seq[:len(seq)-1 ]
+						seq = seq[:len(seq)-1]
 						break
 					}
 				}
@@ -150,29 +150,29 @@ func generate() {
 				seq = seq[:len(seq)-1]
 			}
 		}
-		for _,comb := range combination(seq,2){
-			RULE["bomb_single"] = append(RULE["bomb_single"],b+comb)
+		for _, comb := range combination(seq, 2) {
+			RULE["bomb_single"] = append(RULE["bomb_single"], b+comb)
 			if comb[0] != 'w' && comb[0] != 'W' && comb[1] != 'w' && comb[1] != 'W' {
-				RULE["bomb_pair"] = append(RULE["bomb_pair"],b+comb+comb)
+				RULE["bomb_pair"] = append(RULE["bomb_pair"], b+comb+comb)
 			}
 		}
 	}
 
-	res,err := json.Marshal(RULE)
+	res, err := json.Marshal(RULE)
 	if err != nil {
 		panic("json marsha1 RULE err :" + err.Error())
 	}
 	file, err := os.Create("rule.json")
-	defer func(){
+	defer func() {
 		err = file.Close()
 		if err != nil {
-			logs.Error("generate err: %v",err)
+			logs.Error("generate err: %v", err)
 		}
 	}()
 	if err != nil {
 		panic("create rule.json err:" + err.Error())
 	}
-	_,err = file.Write(res)
+	_, err = file.Write(res)
 	if err != nil {
 		panic("create rule.json err:" + err.Error())
 	}

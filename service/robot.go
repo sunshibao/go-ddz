@@ -36,14 +36,14 @@ func (c *Client) runRobot() {
 
 				case common.ResCallScore:
 					if len(msg) < 4 {
-						logs.Error("ResCallScore msg err:%v",msg)
+						logs.Error("ResCallScore msg err:%v", msg)
 						return
 					}
 					time.Sleep(time.Second)
 					c.Table.Lock.RLock()
 					if c.Table.GameManage.Turn == c && !c.IsCalled {
 						var callEnd bool
-						logs.Debug("ResCallScore %t",msg[3])
+						logs.Debug("ResCallScore %t", msg[3])
 						if res, ok := msg[3].(bool); ok {
 							callEnd = bool(res)
 						}
@@ -63,7 +63,7 @@ func (c *Client) runRobot() {
 
 				case common.ResShowPoker:
 					time.Sleep(time.Second)
-					//logs.Debug("robot [%v] role [%v] receive message ResShowPoker turn :%v", c.UserInfo.Username, c.UserInfo.Role, c.Table.GameManage.Turn.UserInfo.Username)
+					// logs.Debug("robot [%v] role [%v] receive message ResShowPoker turn :%v", c.UserInfo.Username, c.UserInfo.Role, c.Table.GameManage.Turn.UserInfo.Username)
 					c.Table.Lock.RLock()
 					if c.Table.GameManage.Turn == c || (c.Table.GameManage.Turn == nil && c.UserInfo.Role == RoleLandlord) {
 						c.autoShotPoker()
@@ -77,13 +77,13 @@ func (c *Client) runRobot() {
 	}
 }
 
-//自动出牌
+// 自动出牌
 func (c *Client) autoShotPoker() {
-	//因为机器人休眠一秒后才出牌，有可能因用户退出而关闭chan
+	// 因为机器人休眠一秒后才出牌，有可能因用户退出而关闭chan
 	defer func() {
 		err := recover()
 		if err != nil {
-			logs.Warn("autoShotPoker err : %v",err)
+			logs.Warn("autoShotPoker err : %v", err)
 		}
 	}()
 	logs.Debug("robot [%v] auto-shot poker", c.UserInfo.Username)
@@ -103,12 +103,12 @@ func (c *Client) autoShotPoker() {
 	c.toServer <- req
 }
 
-//自动叫分
+// 自动叫分
 func (c *Client) autoCallScore() {
 	defer func() {
 		err := recover()
 		if err != nil {
-			logs.Warn("autoCallScore err : %v",err)
+			logs.Warn("autoCallScore err : %v", err)
 		}
 	}()
 	logs.Debug("robot [%v] autoCallScore", c.UserInfo.Username)

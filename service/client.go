@@ -2,13 +2,13 @@ package service
 
 import (
 	"bytes"
-	"net/http"
-	"time"
-	"github.com/gorilla/websocket"
-	"github.com/astaxie/beego/logs"
 	"encoding/json"
+	"github.com/astaxie/beego/logs"
+	"github.com/gorilla/websocket"
 	"landlord/common"
+	"net/http"
 	"strconv"
+	"time"
 )
 
 const (
@@ -28,7 +28,7 @@ var (
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 		CheckOrigin:     func(r *http.Request) bool { return true },
-	}//不验证origin
+	} // 不验证origin
 )
 
 type UserId int
@@ -47,14 +47,14 @@ type Client struct {
 	Table      *Table
 	HandPokers []int
 	Ready      bool
-	IsCalled   bool    //是否叫完分
-	Next       *Client	//链表
+	IsCalled   bool    // 是否叫完分
+	Next       *Client // 链表
 	IsRobot    bool
-	toRobot    chan []interface{}	//发送给robot的消息
-	toServer   chan []interface{}	//robot发送给服务器
+	toRobot    chan []interface{} // 发送给robot的消息
+	toServer   chan []interface{} // robot发送给服务器
 }
 
-//重置状态
+// 重置状态
 func (c *Client) reset() {
 	c.UserInfo.Role = 1
 	c.HandPokers = make([]int, 0, 21)
@@ -62,7 +62,7 @@ func (c *Client) reset() {
 	c.IsCalled = false
 }
 
-//发送房间内已有的牌桌信息
+// 发送房间内已有的牌桌信息
 func (c *Client) sendRoomTables() {
 	res := make([][2]int, 0)
 	for _, table := range c.Room.Tables {
@@ -92,22 +92,22 @@ func (c *Client) sendMsg(msg []interface{}) {
 	if err != nil {
 		err = c.conn.Close()
 		if err != nil {
-			logs.Error("close client err: %v",err)
+			logs.Error("close client err: %v", err)
 		}
 	}
-	_,err = w.Write(msgByte)
+	_, err = w.Write(msgByte)
 	if err != nil {
-		logs.Error("Write msg [%v] err: %v",string(msgByte),err)
+		logs.Error("Write msg [%v] err: %v", string(msgByte), err)
 	}
 	if err := w.Close(); err != nil {
 		err = c.conn.Close()
 		if err != nil {
-			logs.Error("close err: %v",err)
+			logs.Error("close err: %v", err)
 		}
 	}
 }
 
-//光比客户端
+// 光比客户端
 func (c *Client) close() {
 	if c.Table != nil {
 		for _, client := range c.Table.TableClients {
@@ -133,7 +133,7 @@ func (c *Client) close() {
 		delete(c.Table.TableClients, c.UserInfo.UserId)
 		if c.Table.State == GamePlaying {
 			c.Table.syncUser()
-			//c.Table.reset()
+			// c.Table.reset()
 		}
 		if c.IsRobot {
 			close(c.toRobot)
@@ -142,10 +142,10 @@ func (c *Client) close() {
 	}
 }
 
-//可能是因为版本问题，导致有些未处理的error
+// 可能是因为版本问题，导致有些未处理的error
 func (c *Client) readPump() {
 	defer func() {
-		//logs.Debug("readPump exit")
+		// logs.Debug("readPump exit")
 		c.conn.Close()
 		c.close()
 		if c.Room.AllowRobot {
@@ -178,7 +178,7 @@ func (c *Client) readPump() {
 	}
 }
 
-//心跳
+// 心跳
 func (c *Client) Ping() {
 	ticker := time.NewTicker(pingPeriod)
 	defer func() {

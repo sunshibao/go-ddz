@@ -1,8 +1,8 @@
 package common
 
 import (
-	"sort"
 	"github.com/astaxie/beego/logs"
+	"sort"
 )
 
 func SortStr(pokers string) (sortPokers string) {
@@ -39,8 +39,8 @@ func IsContains(parent, child string) (result bool) {
 	return true
 }
 
-//将牌编号转换为扑克牌
-func ToPokers(num []int) (string) {
+// 将牌编号转换为扑克牌
+func ToPokers(num []int) string {
 	totalCards := "A234567890JQK"
 	res := make([]byte, 0)
 	for _, poker := range num {
@@ -55,7 +55,7 @@ func ToPokers(num []int) (string) {
 	return string(res)
 }
 
-//将牌转换为编号
+// 将牌转换为编号
 func ToPoker(card byte) (poker []int) {
 	if card == 'W' {
 		return []int{52}
@@ -72,7 +72,7 @@ func ToPoker(card byte) (poker []int) {
 	return []int{54}
 }
 
-//将机器人要出的牌转换为编号
+// 将机器人要出的牌转换为编号
 func pokersInHand(num []int, findPokers string) (pokers []int) {
 	var isInResPokers = func(poker int) bool {
 		for _, p := range pokers {
@@ -86,7 +86,7 @@ func pokersInHand(num []int, findPokers string) (pokers []int) {
 	for _, poker := range findPokers {
 		poker := ToPoker(byte(poker))
 	out:
-		for _,pItem := range poker {
+		for _, pItem := range poker {
 			for _, n := range num {
 				if pItem == n && !isInResPokers(n) {
 					pokers = append(pokers, pItem)
@@ -98,7 +98,7 @@ func pokersInHand(num []int, findPokers string) (pokers []int) {
 	return
 }
 
-//获得牌型和大小
+// 获得牌型和大小
 func pokersValue(pokers string) (cardType string, score int) {
 	if combination, ok := Pokers[SortStr(pokers)]; ok {
 		cardType = combination.Type
@@ -107,7 +107,7 @@ func pokersValue(pokers string) (cardType string, score int) {
 	return
 }
 
-//比较牌大小,并返回是否翻倍
+// 比较牌大小,并返回是否翻倍
 func ComparePoker(baseNum, comparedNum []int) (int, bool) {
 	logs.Debug("comparedNum %v  %v", baseNum, comparedNum)
 	if len(baseNum) == 0 || len(comparedNum) == 0 {
@@ -143,7 +143,7 @@ func ComparePoker(baseNum, comparedNum []int) (int, bool) {
 	return 0, false
 }
 
-//查找手牌中是否有比被比较牌型大的牌
+// 查找手牌中是否有比被比较牌型大的牌
 func CardsAbove(handsNum, lastShotNum []int) (aboveNum []int) {
 	handCards := ToPokers(handsNum)
 	turnCards := ToPokers(lastShotNum)

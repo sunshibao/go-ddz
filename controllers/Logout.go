@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"net/http"
 	"github.com/astaxie/beego/logs"
+	"net/http"
 )
 
 func LoginOut(w http.ResponseWriter, r *http.Request) {
@@ -14,8 +14,8 @@ func LoginOut(w http.ResponseWriter, r *http.Request) {
 	cookie := http.Cookie{Name: "user", Path: "/", MaxAge: -1}
 	http.SetCookie(w, &cookie)
 
-	_,err := w.Write([]byte{'1'})
+	_, err := w.Write([]byte{'1'})
 	if err != nil {
-		logs.Error("LoginOut err: %v",err)
+		logs.Error("LoginOut err: %v", err)
 	}
 }

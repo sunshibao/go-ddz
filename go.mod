@@ -11,8 +11,6 @@ replace (
 
 require (
 	github.com/astaxie/beego v1.11.1
-	github.com/go-sql-driver/mysql v1.4.1
 	github.com/gorilla/websocket v1.4.0
-	github.com/jmoiron/sqlx v1.2.0
 	github.com/mattn/go-sqlite3 v1.10.0
 )

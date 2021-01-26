@@ -1,10 +1,10 @@
 package common
 
 import (
-	"os"
-	"io"
 	"encoding/json"
 	"fmt"
+	"io"
+	"os"
 )
 
 var (
